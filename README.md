@@ -1,8 +1,8 @@
-# Topic Modeling and Word Embeddings: LSA vs LDA vs Word2Vec
+# Topic Modeling: LSA vs LDA
 
-This repository contains implementations of the core Natural Language Processing (NLP) algorithms: **LSA**, **LDA**, **Word2Vec**, and **Skip-gram**. 
+This repository contains implementations of the two most popular Topic Modeling algorithms: **LSA** and **LDA**. 
 
-Topic Modeling is a way for computers to read a bunch of documents and automatically group them into hidden "topics" (piles). Word Embeddings are a way for computers to map individual words into a mathematical space to understand their meaning. 
+Topic Modeling is a way for computers to read a bunch of documents and automatically group them into hidden "topics" (piles) without a human telling it what the topics are. 
 
 Here is a simple breakdown of how they work, their math, and how they are different.
 
@@ -51,52 +51,13 @@ LDA is based on the Dirichlet distribution. It assumes two main probabilities:
 
 ---
 
-## 3. Word2Vec
+## 3. The Big Differences (Summary)
 
-**Simple Explanation:** 
-While LSA and LDA group *documents*, Word2Vec looks only at *individual words*. It turns a word into a dense list of numbers (a vector). It's like a language map. Words with similar meanings (like "cat" and "dog") end up placed very close to each other on this map.
-
-**The Math (Vector Arithmetic & Cosine Similarity):**
-Word2Vec maps words to a vector space, allowing us to do math with meaning:
-\[
-Vector("King") - Vector("Man") + Vector("Woman") \approx Vector("Queen")
-\]
-*   **\(Vector\)**: A dense list of numbers (e.g., 100 dimensions) learned by a shallow neural network.
-*   **Cosine Similarity**: The math used to measure the angle between two word vectors to see how similar they are.
-
-*In plain English:* Instead of a massive spreadsheet of 50,000 words with mostly zeros, Word2Vec squishes the meaning of a word into a tiny list of numbers. Because of how the numbers are learned, words that mean the same thing have almost identical numbers.
-
-**The Benefit:** It completely solves the "meaning" problem. To TF-IDF, "car" and "automobile" are completely unrelated. To Word2Vec, their vectors are practically identical.
-
----
-
-## 4. Skip-gram (Word2Vec Architecture)
-
-**Simple Explanation:** 
-Skip-gram is the specific engine under the hood of Word2Vec. It plays a guessing game. It takes one word (the center word), and tries to guess the words that are surrounding it in a sentence. 
-
-**The Math (Softmax & Context Prediction):**
-The goal of Skip-gram is to maximize the probability of the context words, given the center word:
-\[
- \frac{1}{T} \sum_{t=1}^{T} \sum_{-c \le j \le c, j \ne 0} \log P(w_{t+j} | w_t) 
-\]
-*   **\(w_t\)**: The center word (e.g., "cat").
-*   **\(w_{t+j}\)**: The context words (e.g., "the", "chased").
-*   **\(c\)**: The window size (how far left and right to look).
-
-*In plain English:* The network looks at the word "cat". It outputs a probability for every other word in the dictionary. It asks, *"What are the odds that 'chased' is nearby? What are the odds that 'the' is nearby?"* It then adjusts its numbers to make those odds higher.
-
-**The Benefit:** Because it focuses on one word predicting its neighbors, it is incredibly good at learning the meaning of **rare words** and works well even if you have a small dataset.
-
----
-
-## 5. The Big Differences (Summary)
-
-| Feature | LSA | LDA | Word2Vec (Skip-gram) |
-| :--- | :--- | :--- | :--- |
-| **Core Math** | **Linear Algebra** (SVD) | **Probability** (Bayesian) | **Neural Network** (Shallow ANN) |
-| **What it groups** | **Documents** (Topics) | **Documents** (Topics) | **Words** (Meaning/Embeddings) |
-| **Best Input** | **TF-IDF** | **Raw Word Counts** | Raw Text (Tokenized) |
-| **Output Numbers** | Can be **negative** | Always **probabilities** | Dense Vectors (e.g., 100 floats) |
-| **Interpretation** | Hard to explain negative scores. | Easy to explain (e.g., 80% Sports). | Easy (e.g., Cat is close to Dog). |
-| **Unit in Syllabus** | Unit 4 | Unit 4 | Unit 2 |
+| Feature | LSA (Latent Semantic Analysis) | LDA (Latent Dirichlet Allocation) |
+| :--- | :--- | :--- |
+| **Core Math** | **Linear Algebra** (SVD) | **Probability** (Bayesian) |
+| **What it groups** | **Documents** (Topics) | **Documents** (Topics) |
+| **Best Input** | **TF-IDF** | **Raw Word Counts** |
+| **Output Numbers** | Can be **negative** | Always **probabilities** |
+| **Interpretation** | Hard to explain negative scores. | Easy to explain (e.g., 80% Sports). |
+| **Unit in Syllabus** | Unit 4 | Unit 4 |
