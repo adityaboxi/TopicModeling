@@ -1,10 +1,9 @@
-# lda_tfidf.py
+# lda_count.py
 
 # Step 1: Import the specific tools we need
-# Note: We are using TfidfVectorizer as you requested, though LDA technically prefers raw counts.
+# CountVectorizer: Converts text to raw integer word counts (needed for LDA's probability math)
 # LatentDirichletAllocation: The probability engine that performs LDA
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
 # Step 2: Our raw data (Same 10 documents)
@@ -21,14 +20,15 @@ documents = [
     "orange apple fruit sweet dessert"      # 9: Food
 ]
 
-print("========== LDA WITH TF-IDF ==========\n")
+print("========== LDA WITH RAW WORD COUNTS ==========\n")
 
-# Step 3: Text to Numbers (TF-IDF Matrix)
-# We initialize the vectorizer and tell it to ignore common English stop words
-vectorizer = TfidfVectorizer(stop_words='english')
+# Step 3: Text to Numbers (Count Matrix)
+# LDA simulates drawing words from a bag, so it needs integers (e.g., "apple" appears 2 times).
+# CountVectorizer creates a matrix of these raw counts.
+vectorizer = CountVectorizer(stop_words='english')
 
-# fit_transform learns the vocabulary and calculates the TF-IDF score for each word.
-tfidf_matrix = vectorizer.fit_transform(documents)
+# fit_transform learns the vocabulary and counts the words in each document.
+count_matrix = vectorizer.fit_transform(documents)
 
 # We extract the actual words for later printing
 words = vectorizer.get_feature_names_out()
@@ -38,11 +38,11 @@ words = vectorizer.get_feature_names_out()
 # random_state=42 ensures the probability math gives the same result every time
 lda_model = LatentDirichletAllocation(n_components=3, random_state=42)
 
-# fit_transform here does two things:
+# fit_transform does two things:
 # 1. fit: runs the probabilistic math to figure out word probabilities for each topic
 # 2. transform: calculates the probability that each document belongs to each topic
 # 'doc_topic_matrix' is a 10x3 grid of probabilities (they will add up to 1.0, e.g., [0.8, 0.1, 0.1])
-doc_topic_matrix = lda_model.fit_transform(tfidf_matrix)
+doc_topic_matrix = lda_model.fit_transform(count_matrix)
 
 # Step 5: Extracting the Top Words for each Topic
 # 'lda_model.components_' holds the probability weights of words for each topic
