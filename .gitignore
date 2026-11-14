@@ -1,1 +1,34 @@
+# ==========================================
+# 1. Virtual Environments (Ignores both LSA/venv and LDA/venv)
+# ==========================================
 venv/
+.venv/
+env/
+ENV/
+**/venv/
+
+# ==========================================
+# 2. Python Cache & Compiled Files
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# 3. Jupyter Notebooks (if you use them)
+# ==========================================
+.ipynb_checkpoints/
+
+# ==========================================
+# 4. Environment Variables & Secrets
+# ==========================================
+.env
+.env.local
+
+# ==========================================
+# 5. Mac OS & IDE Files (Since you are on a MacBook)
+# ==========================================
+.DS_Store
+.vscode/
+.idea/
